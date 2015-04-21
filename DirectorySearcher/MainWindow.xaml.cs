@@ -74,25 +74,9 @@ namespace DirectorySearcher
         {
             InitializeComponent();
 
-            authContext = new AuthenticationContext(authority, new FileCache());
+            // TODO: Instantiate the AuthenticationContext
 
-            // As the application starts, try to get an access token without prompting the user.  If one exists, show the user as signed in.
-            AuthenticationResult result = null;
-            try
-            {
-                result = authContext.AcquireToken(graphResourceId, clientId, redirectUri, PromptBehavior.Never);
-            }
-            catch (AdalException ex)
-            {
-                if (ex.ErrorCode != "user_interaction_required")
-                {
-                    // An unexpected error occurred.
-                    MessageBox.Show(ex.Message);
-                }
-
-                // If user interaction is required, proceed to main page without singing the user in.
-                return;
-            }
+            // TODO: As the application starts, try to get an access token without prompting the user.  If one exists, show the user as signed in.
 
             // A valid token is in the cache
             SignOutButton.Visibility = Visibility.Visible;
@@ -101,8 +85,7 @@ namespace DirectorySearcher
 
         private void SignOut(object sender = null, RoutedEventArgs args = null)
         {
-            // Clear the token cache
-            authContext.TokenCache.Clear();
+            // TODO: Clear the token cache
 
             // Clear cookies from the browser control.
             ClearCookies();
@@ -123,22 +106,7 @@ namespace DirectorySearcher
                 return;
             }
 
-            // Get an Access Token for the Graph API
-            AuthenticationResult result = null;
-            try
-            {
-                result = authContext.AcquireToken(graphResourceId, clientId, redirectUri);
-                UserNameLabel.Content = result.UserInfo.DisplayableId;
-                SignOutButton.Visibility = Visibility.Visible;
-            }
-            catch (AdalException ex)
-            {
-                // An unexpected error occurred, or user canceled the sign in.
-                if (ex.ErrorCode != "access_denied")
-                    MessageBox.Show(ex.Message);
-
-                return;
-            }
+            // TODO: Get an Access Token for the Graph API
 
             // Once we have an access_token, search for users.
             try
