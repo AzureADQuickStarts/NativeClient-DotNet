@@ -76,11 +76,16 @@ namespace DirectorySearcher
 
             authContext = new AuthenticationContext(authority, new FileCache());
 
+            CheckForCachedToken();
+        }
+
+        public async void CheckForCachedToken() 
+        {
             // As the application starts, try to get an access token without prompting the user.  If one exists, show the user as signed in.
             AuthenticationResult result = null;
             try
             {
-                result = authContext.AcquireToken(graphResourceId, clientId, redirectUri, PromptBehavior.Never);
+                result = await authContext.AcquireTokenAsync(graphResourceId, clientId, redirectUri, new PlatformParameters(PromptBehavior.Never));
             }
             catch (AdalException ex)
             {
@@ -114,7 +119,7 @@ namespace DirectorySearcher
             SearchText.Text = string.Empty;
         }
 
-        private void Search(object sender, RoutedEventArgs e)
+        private async void Search(object sender, RoutedEventArgs e)
         {
             // Validate the Input String
             if (string.IsNullOrEmpty(SearchText.Text))
@@ -127,7 +132,7 @@ namespace DirectorySearcher
             AuthenticationResult result = null;
             try
             {
-                result = authContext.AcquireToken(graphResourceId, clientId, redirectUri);
+                result = await authContext.AcquireTokenAsync(graphResourceId, clientId, redirectUri, new PlatformParameters(PromptBehavior.Auto));
                 UserNameLabel.Content = result.UserInfo.DisplayableId;
                 SignOutButton.Visibility = Visibility.Visible;
             }
