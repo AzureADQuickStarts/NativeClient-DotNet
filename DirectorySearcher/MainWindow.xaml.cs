@@ -79,14 +79,6 @@ namespace DirectorySearcher
             CheckForCachedToken();
         }
 
-        public MainWindow()
-        {
-            InitializeComponent();
-
-            authContext = new AuthenticationContext(authority, new FileCache());
-
-        }
-
         public async void CheckForCachedToken()
         {
             // TODO: As the application starts, try to get an access token without prompting the user.  If one exists, show the user as signed in.
@@ -110,7 +102,7 @@ namespace DirectorySearcher
             SearchText.Text = string.Empty;
         }
 
-        private void Search(object sender, RoutedEventArgs e)
+        private async void Search(object sender, RoutedEventArgs e)
         {
             // Validate the Input String
             if (string.IsNullOrEmpty(SearchText.Text))
